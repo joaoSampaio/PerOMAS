@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Beacon">
+
+        <ListPreference
+            android:key="beacon_type"
+            android:title="Beacon Type"
+            android:summary="AltBeacon"
+            android:dialogTitle="Pick the beacon type"
+            android:entries="@array/beacon_type"
+            android:icon="@drawable/ic_bluetooth"
+            android:entryValues="@array/beacon_type">
+        </ListPreference>
+
+        <MultiSelectListPreference
+            android:key="list_beacons"
+            android:title="My beacons"
+            android:summary="Notifies the web server if you are near one of the beacons"
+            android:dialogTitle="dialog title"
+            android:entries="@array/beacon_ids"
+            android:entryValues="@array/beacon_ids" />
+
+
+
+
+        <EditTextPreference
+            android:key="custom_beacon"
+            android:title="Custom Beacon identifier"
+            android:summary="Custom id if beacon not in the list obove."
+            android:dialogTitle="Beacon identifier"
+            android:inputType="textNoSuggestions"
+            android:maxLength="31"
+            android:hint="de305d54-75b4-431b-adb2-eb6b9e546014"
+             />
+
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Target Beacons">
+
+        <EditTextPreference
+            android:key="beacon_list_url"
+            android:title="Url list of beacons"
+            android:summary="Site that contains a pre-list of beacons"
+            android:dialogTitle="Url of pre-generated beacon list"
+            />
+        <Preference android:title="Load Beacon list"
+            android:key="btn_get_list"
+            android:summary="Fetches the beacon list from the above defined url"/>
+
+
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="Bluetooth background service">
+        <EditTextPreference
+            android:key="notification_url"
+            android:title="WebSite notification url"
+            android:summary="Site to be notified on beacon discovery"
+            android:dialogTitle="Website url to notify if beacon is detected"
+            />
+
+        <pt.ulisboa.tecnico.peromas.peromas.bluetooth.ServiceStartPreference
+            android:key="start_service"
+            android:title="Beacon discovery service"
+            android:enabled="true"
+            android:summary="Enables the discovry of beacons and notifies website if a target beacon is found"
+            android:widgetLayout="@xml/status"
+            >
+
+
+        </pt.ulisboa.tecnico.peromas.peromas.bluetooth.ServiceStartPreference>
+
+        <!--<Preference-->
+            <!--android:key="resetBD"-->
+            <!--android:title="Beacon discovery service"-->
+            <!--android:summary="Enables the discovry of beacons and notifies website if a target beacon is found"-->
+            <!--android:widgetLayout="@xml/status"-->
+            <!--></Preference>-->
+
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

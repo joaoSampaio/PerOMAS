@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_row_selector"
+    android:descendantFocusability="blocksDescendants"
+    android:padding="8dp" >
+
+    <!-- Movie Title -->
+    <TextView
+        android:id="@+id/ID1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="21dp"
+        android:text="Uiid:"
+        android:textStyle="bold"
+         />
+
+    <TextView
+        android:id="@+id/ID2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:text="ID2"
+        android:layout_below="@+id/ID1"
+        android:layout_alignStart="@+id/ID1"
+        android:layout_alignLeft="@+id/ID1"/>
+
+    <TextView
+        android:id="@+id/ID3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:text="ID3"
+        android:layout_below="@+id/ID2"
+        android:layout_alignStart="@+id/ID2"
+        android:layout_alignLeft="@+id/ID2"/>
+
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:text="ID3"
+        android:layout_below="@+id/ID3"
+        android:layout_alignStart="@+id/ID3"
+        android:layout_alignLeft="@+id/ID3"/>
+
+
+</RelativeLayout>
