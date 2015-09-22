@@ -8,4 +8,6 @@ public class Constants {
     public final static String GREEN = "#1F7A1F";
     public final static String iBeacon = "iBeacon";
     public final static String AltBeacon = "AltBeacon";
+    public static final String END_POINT = "http://176.111.106.49:3000";
+
 }

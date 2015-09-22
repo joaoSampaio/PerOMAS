@@ -20,6 +20,7 @@ import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
+import org.altbeacon.beacon.powersave.BackgroundPowerSaver;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,11 +39,6 @@ import pt.ulisboa.tecnico.peromas.peromas.wifi.SendMessageService;
  */
 public class BackGroundService extends Service implements BeaconConsumer {
 
-
-
-    //lembrar fazer mudar e ligar rede wifi (talvez????)
-
-
     private static String TAG = "teste";
     private BeaconManager beaconManager;
     private Map<String, BeaconWithDate> allBeacons;
@@ -51,6 +47,7 @@ public class BackGroundService extends Service implements BeaconConsumer {
     private String server_notify_url;
     boolean doSendMsg;
     private BackGroundService backgroundService;
+    private BackgroundPowerSaver backgroundPowerSaver;
     Handler h;
     private MainActivity activity;
     private final IBinder mBinder = new LocalBinder();
@@ -70,9 +67,6 @@ public class BackGroundService extends Service implements BeaconConsumer {
         this.backgroundService = this;
         this.uuids = new ArrayList<>();
         beacon_type = Constants.AltBeacon;
-
-
-
     }
 
     @Override
@@ -110,21 +104,33 @@ public class BackGroundService extends Service implements BeaconConsumer {
         if(beaconManager == null || !beacon_type.equals(new_beacon_type)) {
             //removes previous beaconManager
             this.clean();
-
-
             beaconManager = BeaconManager.getInstanceForApplication(this);
             this.beacon_type = new_beacon_type;
-
             //if the target is an iBeacon we change the layout. (AltBeacon is by default enable)
             if(this.beacon_type.equals(Constants.iBeacon)){
                 Log.i("teste", "************************ibeacon:  ");
                 beaconManager.getBeaconParsers().add(new BeaconParser().
                         setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
             }
-
             beaconManager.bind(this);
-        }
 
+            backgroundPowerSaver = new BackgroundPowerSaver(this);
+            // set the duration of the scan to be 2.1 seconds
+            beaconManager.setBackgroundScanPeriod(5100l);
+            // set the time between each scan to be  30 seconds
+            String frequency_beacon = preferences.getString("frequency_beacon", 15+"");
+            int times = 1;
+            try{
+                times = Integer.parseInt(frequency_beacon);
+            }catch (Exception e){
+
+            }
+
+            beaconManager.setBackgroundBetweenScanPeriod(times * 1000l);
+            beaconManager.setBackgroundMode(true);
+
+            //backgroundPowerSaver = new BackgroundPowerSaver(this);
+        }
         return Service.START_STICKY;
     }
 
@@ -145,6 +151,7 @@ public class BackGroundService extends Service implements BeaconConsumer {
                                                    service.execute();
                                                }
 
+                                               //doSendMsg = false;
                                                for (Beacon beacon : beacons) {
                                                    if (doSendMsg && uuids.contains(beacon.getId1() + "")) {
                                                        //enviar msg web
@@ -153,10 +160,10 @@ public class BackGroundService extends Service implements BeaconConsumer {
                                                        Log.i("teste", "************************enviar msg web  ");
 
                                                        doSendMsg = false;
-                                                       SendMessageService service = new SendMessageService(server_notify_url);
+                                                       SendMessageService service = new SendMessageService(server_notify_url, beacon.getId1() + "");
                                                        service.execute();
 
-                                                       //we found the beacon, now we stop searching and try again in 20 seconds
+                                                       //we found the beacon, now we stop searching and try again in 60 seconds
                                                        if (activity == null) {
                                                            beaconManager.unbind(backgroundService);
                                                            beaconManager = null;
@@ -171,7 +178,7 @@ public class BackGroundService extends Service implements BeaconConsumer {
                                                                    beaconManager.bind(backgroundService);
                                                                }
                                                            }
-                                                       }, 20000);
+                                                       }, 60000);
                                                    }
                                                    allBeacons.put(beacon.getId1() + "", new BeaconWithDate(beacon.getId1() + "", date, beacon));
                                                }
@@ -246,6 +253,10 @@ public class BackGroundService extends Service implements BeaconConsumer {
 
     public void registerMonitoringActivity(MainActivity activity) {
         this.activity = activity;
+        if(activity != null && beaconManager != null)
+            beaconManager.setBackgroundMode(false);
+        if(activity == null && beaconManager != null)
+            beaconManager.setBackgroundMode(true);
     }
 
     public boolean isBoundMonitoringActivity(){

@@ -1,39 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <item
+        android:title="General"
+        android:id="@+id/first_group">
+        <menu android:checkableBehavior="single" android:id="@+id/main1_group">
+            <!--<item-->
+                <!--android:id="@+id/home"-->
+                <!--android:checked="false"-->
+                <!--android:icon="@drawable/ic_home"-->
+                <!--android:title="@string/home_string" />-->
 
-        <item
-            android:id="@+id/home"
-            android:checked="false"
-            android:icon="@drawable/ic_home"
-            android:title="@string/home_string" />
+            <!--<item-->
+                <!--android:id="@+id/statistics"-->
+                <!--android:checked="false"-->
+                <!--android:icon="@drawable/ic_stats"-->
+                <!--android:title="@string/statistics_string" />-->
 
-        <item
-            android:id="@+id/statistics"
-            android:checked="false"
-            android:icon="@drawable/ic_stats"
-            android:title="@string/statistics_string" />
+            <item
+                android:id="@+id/controls"
+                android:checked="false"
+                android:icon="@drawable/ic_control"
+                android:title="@string/controls_string" />
+        </menu>
+    </item>
 
-        <item
-            android:id="@+id/controls"
-            android:checked="false"
-            android:icon="@drawable/ic_control"
-            android:title="@string/controls_string" />
+    <item
+        android:title="Proximity beacon"
+        android:id="@+id/second_group">
+        <menu android:checkableBehavior="single" android:id="@+id/main2_group">
+            <item
+                android:id="@+id/track"
+                android:checked="false"
+                android:icon="@drawable/ic_bluetooth"
+                android:title="@string/track_string" />
 
-        <item
-            android:id="@+id/track"
+
+            <item
+                android:id="@+id/location"
+                android:checked="false"
+                android:icon="@drawable/ic_bluetooth"
+                android:title="@string/location_string" />
+        </menu>
+    </item>
+
+
+    <item
+        android:title="General Settings"
+        android:id="@+id/third_group">
+        <menu android:checkableBehavior="single" android:id="@+id/main3_group">
+            <item
+            android:id="@+id/settings"
             android:checked="false"
             android:icon="@drawable/ic_bluetooth"
-            android:title="@string/track_string" />
-
-
-        <item
-            android:id="@+id/location"
-            android:checked="false"
-            android:icon="@drawable/ic_bluetooth"
-            android:title="@string/location_string" />
-
-
-    </group>
+            android:title="@string/settings_string" />
+        </menu>
+    </item>
 </menu>
