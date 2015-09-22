@@ -15,6 +15,7 @@
     <string name="controls_string">Controls</string>
     <string name="track_string">Track Beacons</string>
     <string name="location_string">Location Service</string>
+    <string name="settings_string">Settings</string>
 
     <string name="closeDrawer">Navigation View</string>
     <string name="openDrawer">Navigation View Closed</string>
@@ -36,25 +37,25 @@
 
 
 
-    <string-array name="nav_drawer_items">
-        <item >Home</item> <!-- ambient, status(devices ligados), temperatura, humidade -->
-        <item >Statistics</item>
-        <item >Controls</item> <!-- rule based actions -->
-        <item >Track Beacons</item>
-        <item >Location Service</item> <!-- user presence, on/off service -->
-        <!--<item >Login</item>  necessário mas nao parace no menu   -->
+    <!--<string-array name="nav_drawer_items">-->
+        <!--<item >Home</item> &lt;!&ndash; ambient, status(devices ligados), temperatura, humidade &ndash;&gt;-->
+        <!--<item >Statistics</item>-->
+        <!--<item >Controls</item> &lt;!&ndash; rule based actions &ndash;&gt;-->
+        <!--<item >Track Beacons</item>-->
+        <!--<item >Location Service</item> &lt;!&ndash; user presence, on/off service &ndash;&gt;-->
+        <!--&lt;!&ndash;<item >Login</item>  necessário mas nao parace no menu   &ndash;&gt;-->
 
-    </string-array>
+    <!--</string-array>-->
 
-    <!-- Nav Drawer List Item Icons -->
-    <!-- Keep them in order as the titles are in -->
-    <array name="nav_drawer_icons">
-        <item>@drawable/ic_home</item>
-        <item>@drawable/ic_stats</item>
-        <item>@drawable/ic_control</item>
-        <item>@drawable/ic_bluetooth</item>
-        <item>@drawable/ic_bluetooth</item>
-    </array>
+    <!--&lt;!&ndash; Nav Drawer List Item Icons &ndash;&gt;-->
+    <!--&lt;!&ndash; Keep them in order as the titles are in &ndash;&gt;-->
+    <!--<array name="nav_drawer_icons">-->
+        <!--<item>@drawable/ic_home</item>-->
+        <!--<item>@drawable/ic_stats</item>-->
+        <!--<item>@drawable/ic_control</item>-->
+        <!--<item>@drawable/ic_bluetooth</item>-->
+        <!--<item>@drawable/ic_bluetooth</item>-->
+    <!--</array>-->
 
 
 </resources>

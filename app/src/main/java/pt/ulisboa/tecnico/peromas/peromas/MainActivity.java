@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
 		//calling sync state is necessay or else your hamburger icon wont show up
 		actionBarDrawerToggle.syncState();
-        displayView(R.id.home);
+        displayView(R.id.controls);
 	}
 
 
@@ -94,14 +94,14 @@ public class MainActivity extends AppCompatActivity {
         // update the main content by replacing fragments
         Fragment fragment = null;
         switch (position) {
-            case R.id.home:
-                Toast.makeText(getApplicationContext(),"home Selected",Toast.LENGTH_SHORT).show();
-                fragment = new HomeFragment();
-                break;
-            case R.id.statistics:
-                Toast.makeText(getApplicationContext(),"statis Selected",Toast.LENGTH_SHORT).show();
-                fragment = new StatisticsFragment();
-                break;
+//            case R.id.home:
+//                Toast.makeText(getApplicationContext(),"home Selected",Toast.LENGTH_SHORT).show();
+//                fragment = new HomeFragment();
+//                break;
+//            case R.id.statistics:
+//                Toast.makeText(getApplicationContext(),"statis Selected",Toast.LENGTH_SHORT).show();
+//                fragment = new StatisticsFragment();
+//                break;
             case R.id.controls:
                 Toast.makeText(getApplicationContext(),"controls Selected",Toast.LENGTH_SHORT).show();
                 fragment = new ControlsFragment();
@@ -122,6 +122,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"location Selected",Toast.LENGTH_SHORT).show();
                 fragment = new BluetoothPreferencesFragment();
                 break;
+			case R.id.settings:
+				fragment = new PerOMASPreferencesFragment();
+				break;
             default:
                 Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
                 break;

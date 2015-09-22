@@ -47,8 +47,8 @@ public class TextWatcher_UUID implements TextWatcher {
         if(noDash.length() >= 9 ){
             noDash = noDash.substring(0,8) + "-" + noDash.substring(8,noDash.length());
         }
-        //mBlockCompletion = true;
-        edit_uuid.removeTextChangedListener(this);
+
+        /*edit_uuid.removeTextChangedListener(this);
         int pos = edit_uuid.getSelectionStart();
         edit_uuid.setText(noDash);
         if(noDash.length() == (8+2) || noDash.length() == (12+3) || noDash.length() == (16+4) || noDash.length() == (20+5)){
@@ -58,7 +58,21 @@ public class TextWatcher_UUID implements TextWatcher {
         if(noDash.length() < (pos))
             pos = noDash.length();
         edit_uuid.setSelection(pos);
-        //mBlockCompletion = false;
+        edit_uuid.addTextChangedListener(this);*/
+
+        edit_uuid.removeTextChangedListener(this);
+        int pos = edit_uuid.getSelectionStart();
+        edit_uuid.getText().clear();
+        edit_uuid.append(noDash);
+        if(noDash.length() == (8+2) || noDash.length() == (12+3) || noDash.length() == (16+4) || noDash.length() == (20+5)){
+            if(noDash.length() >= (pos+1))
+                pos +=1;
+        }
+        if(noDash.length() < (pos))
+            pos = noDash.length();
+        edit_uuid.setSelection(pos);
         edit_uuid.addTextChangedListener(this);
+
+
     }
 }

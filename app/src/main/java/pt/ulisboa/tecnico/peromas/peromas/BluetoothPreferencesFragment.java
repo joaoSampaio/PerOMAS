@@ -79,7 +79,7 @@ public class BluetoothPreferencesFragment extends PreferenceFragment implements
             button.setOnPreferenceClickListener(new PreferenceListener());
         }
 
-
+        background_on = isMyServiceRunning(BackGroundService.class);
         Preference status_service = findPreference("start_service");
         if(status_service != null && status_service instanceof ServiceStartPreference) {
             status_service.setOnPreferenceClickListener(new PreferenceListener());

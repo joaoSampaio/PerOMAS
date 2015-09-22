@@ -28,12 +28,14 @@
         <EditTextPreference
             android:key="custom_beacon"
             android:title="Custom Beacon identifier"
-            android:summary="Custom id if beacon not in the list obove."
+            android:summary="Custom id if beacon not in the list above."
             android:dialogTitle="Beacon identifier"
             android:inputType="textNoSuggestions"
-            android:maxLength="31"
+            android:maxLength="36"
             android:hint="de305d54-75b4-431b-adb2-eb6b9e546014"
              />
+
+
 
 
 
@@ -65,6 +67,16 @@
             android:dialogTitle="Website url to notify if beacon is detected"
             />
 
+        <EditTextPreference
+            android:key="frequency_beacon"
+            android:title="Scanner Frequency"
+            android:summary="The time between scans of advertisements."
+            android:dialogTitle="Scan frequency (seconds)"
+            android:inputType="number"
+            android:maxLength="36"
+            android:hint="15"
+            />
+
         <pt.ulisboa.tecnico.peromas.peromas.bluetooth.ServiceStartPreference
             android:key="start_service"
             android:title="Beacon discovery service"
@@ -75,14 +87,6 @@
 
 
         </pt.ulisboa.tecnico.peromas.peromas.bluetooth.ServiceStartPreference>
-
-        <!--<Preference-->
-            <!--android:key="resetBD"-->
-            <!--android:title="Beacon discovery service"-->
-            <!--android:summary="Enables the discovry of beacons and notifies website if a target beacon is found"-->
-            <!--android:widgetLayout="@xml/status"-->
-            <!--></Preference>-->
-
 
 
     </PreferenceCategory>
