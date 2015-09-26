@@ -15,6 +15,43 @@ import retrofit.client.OkClient;
 public class RestClient {
     private static String cookies;
 
+    private static String user;
+    private static String pass;
+    private static String ip;
+    private static String csrf;
+
+    public static String getUser() {
+        return user;
+    }
+
+    public static void setUser(String user) {
+        RestClient.user = user;
+    }
+
+    public static String getPass() {
+        return pass;
+    }
+
+    public static void setPass(String pass) {
+        RestClient.pass = pass;
+    }
+
+    public static String getIp() {
+        return ip;
+    }
+
+    public static void setIp(String ip) {
+        RestClient.ip = ip;
+    }
+
+    public static String getCsrf() {
+        return csrf;
+    }
+
+    public static void setCsrf(String csrf) {
+        RestClient.csrf = csrf;
+    }
+
     public static String getCookies() {
         return cookies;
     }

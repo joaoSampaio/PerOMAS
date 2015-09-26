@@ -3,50 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    
+
     <TextView
         android:id="@+id/txtLabelUpload"
-         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="16dp"
-        android:text="Display the events, rules and actions"/>
-    
-    <ImageView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtLabelUpload"
-        android:src="@drawable/ic_control"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:id="@+id/imageView3" />
-
-    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:id="@+id/btn_light0"
-         />
+       android:layout_alignParentTop="true"
+        android:padding="10dp"
+        android:textSize="19sp"
+        android:text="Control the office lights with the ease of a button, no more logins. It's all taken care for you."/>
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lights"
-        android:layout_toRightOf="@+id/btn_light0"
-        android:id="@+id/button3"
-         />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="logout"
-        android:id="@+id/button4"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/txtLabelUpload"
-        android:layout_alignEnd="@+id/txtLabelUpload" />
+        android:text="By Sampaio for Mangas request"
+        android:id="@+id/textView"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView"
+        android:layout_marginBottom="30dp"
         android:layout_centerInParent="true">
 
         <ImageView
@@ -56,22 +35,63 @@
             android:background="@drawable/light_switch_bg"
             android:layout_centerInParent="true" />
 
-        <ImageButton
-            android:layout_width="104dp"
-            android:layout_height="209dp"
-            android:id="@+id/light_switch"
-            android:background="@drawable/btn_lights"
-            android:layout_centerInParent="true" />
-
-        <ImageView
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageLight"
-            android:layout_alignBottom="@+id/light_switch"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="46dp"
-            android:src="@drawable/power_button_off" />
+            android:layout_centerInParent="true">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:id="@+id/switch1"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp">
+
+                <ImageButton
+                    android:layout_width="104dp"
+                    android:layout_height="209dp"
+                    android:id="@+id/light_switch1"
+                    android:background="@drawable/btn_lights"
+                    android:layout_centerInParent="true" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageLight1"
+                    android:layout_alignBottom="@+id/light_switch1"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="46dp"
+                    android:src="@drawable/power_button_off" />
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/switch1">
+
+                <ImageButton
+                    android:layout_width="104dp"
+                    android:layout_height="209dp"
+                    android:id="@+id/light_switch2"
+                    android:background="@drawable/btn_lights"
+                    android:layout_centerInParent="true" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageLight2"
+                    android:layout_alignBottom="@+id/light_switch2"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="46dp"
+                    android:src="@drawable/power_button_off" />
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
     </RelativeLayout>
+
+
 
 
 </RelativeLayout>
