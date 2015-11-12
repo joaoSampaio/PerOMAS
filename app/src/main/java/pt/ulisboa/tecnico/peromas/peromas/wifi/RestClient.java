@@ -13,7 +13,6 @@ import retrofit.client.OkClient;
  * Created by sampaio on 26-03-2015.
  */
 public class RestClient {
-    private static String cookies;
 
     private static String user;
     private static String pass;
@@ -52,18 +51,14 @@ public class RestClient {
         RestClient.csrf = csrf;
     }
 
-    public static String getCookies() {
-        return cookies;
-    }
-
     private static Api api;
 
     public static Api getApi(){
         return api;
     }
 
-    public static void setCookies(String cookies) {
-        RestClient.cookies = cookies;
+    public static void clearApi() {
+        RestClient.api = null;
     }
 
     /**
@@ -72,9 +67,9 @@ public class RestClient {
     private static final RequestInterceptor COOKIES_REQUEST_INTERCEPTOR = new RequestInterceptor() {
         @Override
         public void intercept(RequestFacade request) {
-            if (null != cookies && cookies.length() > 0) {
-                //request.addHeader("Cookie", cookies);
-            }
+//            if (null != cookies && cookies.length() > 0) {
+//                //request.addHeader("Cookie", cookies);
+//            }
         }
     };
 

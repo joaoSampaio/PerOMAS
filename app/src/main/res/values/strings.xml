@@ -13,6 +13,7 @@
     <string name="home_string">Home</string>
     <string name="statistics_string">Statistics</string>
     <string name="controls_string">Controls</string>
+    <string name="webserver_string">Webserver</string>
     <string name="track_string">Track Beacons</string>
     <string name="location_string">Location Service</string>
     <string name="settings_string">Settings</string>

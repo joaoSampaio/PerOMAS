@@ -313,16 +313,20 @@ public class ControlsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void recycleBitmaps(){
-        ImageView light = (ImageView)rootView.findViewById(R.id.imageLight1);
-        if(bitmap_lightOn != null && !bitmap_lightOn.isRecycled()){
-            light.setImageBitmap(null);
-            bitmap_lightOn.recycle();
-            bitmap_lightOn = null;
-        }
-        if(bitmap_lightOff != null && !bitmap_lightOff.isRecycled()){
-            light.setImageBitmap(null);
-            bitmap_lightOff.recycle();
-            bitmap_lightOff = null;
+        try {
+            ImageView light = (ImageView)rootView.findViewById(R.id.imageLight1);
+            if(bitmap_lightOn != null && !bitmap_lightOn.isRecycled()){
+                light.setImageBitmap(null);
+                bitmap_lightOn.recycle();
+                bitmap_lightOn = null;
+            }
+            if(bitmap_lightOff != null && !bitmap_lightOff.isRecycled()){
+                light.setImageBitmap(null);
+                bitmap_lightOff.recycle();
+                bitmap_lightOff = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

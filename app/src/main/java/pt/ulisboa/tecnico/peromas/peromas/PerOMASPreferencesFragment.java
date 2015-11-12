@@ -49,11 +49,7 @@ public class PerOMASPreferencesFragment extends PreferenceFragment implements
         }
 
         status = ((CheckCredencialsPreference) status_service).getTextView();
-        //status.setText(" ");
-        //default
-        //changeColor("#00B20000");
-
-    }
+        }
 
     @Override
     public void onPause() {
@@ -81,16 +77,21 @@ public class PerOMASPreferencesFragment extends PreferenceFragment implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
+        if(key.equals("ip_peromas")){
+            //Since RestClient is a singleton we must destroy the previous one
+            RestClient.clearApi();
+        }
     }
 
     private void login(){
 
-
+        //setPreferenceScreen(null);
+        //addPreferencesFromResource(R.xml.general_settings);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         final String username = preferences.getString("username_peromas", not_set);
         final String password = preferences.getString("password_peromas", not_set);
         ip = preferences.getString("ip_peromas", not_set);
+        Log.d("myapp", "****IP:" + ip);
         if(!ip.startsWith("http://"))
             ip = "http://" + ip;
 
