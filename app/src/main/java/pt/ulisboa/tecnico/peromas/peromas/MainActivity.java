@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -15,23 +16,38 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
+
+import com.koushikdutta.async.http.server.AsyncHttpServer;
 
 import org.altbeacon.beacon.Beacon;
 
 import java.util.Collection;
+
+import pt.ulisboa.tecnico.peromas.peromas.kiosk.PrefUtils;
 
 
 public class MainActivity extends AppCompatActivity {
 	private Toolbar toolbar;
 	private NavigationView navigationView;
 	private DrawerLayout drawerLayout;
+	private AsyncHttpServer server;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 		setContentView(R.layout.activity_main);
+
+
+		// every time someone enters the kiosk mode, set the flag true
+		PrefUtils.setKioskModeActive(true, getApplicationContext());
+
+
+
+
 
 		// Initializing Toolbar and setting it as the actionbar
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -106,6 +122,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"controls Selected",Toast.LENGTH_SHORT).show();
                 fragment = new ControlsFragment();
                 break;
+			case R.id.webserver:
+				Toast.makeText(getApplicationContext(),"webserver Selected",Toast.LENGTH_SHORT).show();
+				fragment = new WebserverFragment();
+				break;
             case R.id.track:
 				if (!this.isBLESupported()) {
 					Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
@@ -166,8 +186,8 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 
-    public void transmitBLEBeacons(Collection<Beacon> beacons){
-        Fragment fragment =  getFragmentManager().findFragmentByTag(R.id.track + "");
+    public void transmitBLEBeacons(Collection<Beacon> beacons) {
+		Fragment fragment =  getFragmentManager().findFragmentByTag(R.id.track + "");
         if(fragment != null && fragment.isVisible()){
 
             ((TrakerBLEFragment)fragment).onBeaconNotifier(beacons);
@@ -184,7 +204,38 @@ public class MainActivity extends AppCompatActivity {
 		return false;
 	}
 
+	public AsyncHttpServer getServer() {
+		return server;
+	}
+
+	public void setServer(AsyncHttpServer server) {
+		this.server = server;
+	}
 
 
+//	@Override
+//	protected void onPause() {
+//		super.onPause();
+//		Intent intent = new Intent(this, MainActivity.class);
+//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//		intent.setAction(Intent.ACTION_MAIN);
+//		startActivity(intent);
+//	}
+
+	@Override
+	public void onBackPressed() {
+		// nothing to do here
+		// … really
+	}
+
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		if(!hasFocus) {
+			// Close every kind of system dialog
+			Intent closeDialog = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+			sendBroadcast(closeDialog);
+		}
+	}
 
 }

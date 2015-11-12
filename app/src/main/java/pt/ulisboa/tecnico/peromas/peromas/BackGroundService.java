@@ -73,7 +73,11 @@ public class BackGroundService extends Service implements BeaconConsumer {
     public synchronized void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "--------------------------------stop");
-
+        Log.i(TAG, "--------------------------------stop");
+        Log.i(TAG, "--------------------------------stop");
+        Log.i(TAG, "--------------------------------stop");
+        Log.i(TAG, "--------------------------------stop");
+        Log.i(TAG, "--------------------------------stop");
         activity = null;
         this.clean();
     }

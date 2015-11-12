@@ -19,6 +19,8 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Map;
+import java.util.TreeMap;
 
 import pt.ulisboa.tecnico.peromas.peromas.wifi.RestClient;
 import retrofit.Callback;
@@ -27,13 +29,16 @@ import retrofit.client.Response;
 
 public class ControlsFragment extends Fragment implements View.OnClickListener {
 
-    private final static int[] CLICKABLE = {R.id.btn_light0, R.id.button3, R.id.button4, R.id.light_switch};
+    private final static int[] CLICKABLE = { R.id.light_switch1, R.id.light_switch2};
     private int errors;
     View rootView;
-    private boolean isLightOn;
+    private final static String LIGHT_1 = "Light_1";
+    private final static String LIGHT_2 = "Light_2";
+    private boolean[] isLightOn;
     String username, password, ip, csrf_token;
     String not_set = "not set";
 
+    Handler handler;
     private Bitmap bitmap_lightOn, bitmap_lightOff;
 
 	public ControlsFragment(){}
@@ -46,8 +51,32 @@ public class ControlsFragment extends Fragment implements View.OnClickListener {
 
         for(int id : CLICKABLE)
             rootView.findViewById(id).setOnClickListener(this);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        init();
+        return rootView;
+    }
 
+
+    private void enableContinuousLightStatus(){
+        if(handler == null)
+            handler = new Handler();
+
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                if (errors <= 3) {
+                    getStatus();
+                    handler.postDelayed(this, 3000);
+                }
+
+            }
+        };
+
+        task.run();
+    }
+
+
+    private void init(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         errors = 0;
         username = preferences.getString("username_peromas", not_set);
         password = preferences.getString("password_peromas", not_set);
@@ -55,14 +84,7 @@ public class ControlsFragment extends Fragment implements View.OnClickListener {
         if(!ip.startsWith("http://"))
             ip = "http://" + ip;
         csrf_token ="not set";
-        isLightOn = false;
-
-
-
-
-
-
-        return rootView;
+        isLightOn = new boolean[2];
     }
 
     @Override
@@ -70,6 +92,8 @@ public class ControlsFragment extends Fragment implements View.OnClickListener {
         super.onStop();
         Log.d("myapp", " onStop");
         recycleBitmaps();
+        if(handler != null)
+            handler.removeCallbacksAndMessages(null);
 
     }
 
@@ -77,7 +101,9 @@ public class ControlsFragment extends Fragment implements View.OnClickListener {
     public void onStart(){
         super.onStart();
         Log.d("myapp", " onStart");
-        getStatus();
+        loadBitmaps();
+        enableContinuousLightStatus();
+        //getStatus();
 
     }
 
@@ -90,8 +116,6 @@ public class ControlsFragment extends Fragment implements View.OnClickListener {
             Toast.makeText(getActivity(),"Username/Password/IP are not defined. Please go to settings.",Toast.LENGTH_SHORT).show();
             return;
         }
-
-        Toast.makeText(getActivity(),username,Toast.LENGTH_SHORT).show();
 
         RestClient.getService(ip).loginGET(new Callback<Response>() {
             @Override
@@ -152,22 +176,23 @@ public class ControlsFragment extends Fragment implements View.OnClickListener {
     private boolean isWifiOn(){
         WifiManager wifi = (WifiManager)getActivity().getSystemService(Context.WIFI_SERVICE);
         if (!wifi.isWifiEnabled()){
-            Toast.makeText(getActivity(),"Wifi is not enabled!.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Wifi is not enabled!.", Toast.LENGTH_SHORT).show();
         }
         return wifi.isWifiEnabled();
     }
 
-    private void turnLight(){
-
-
-
+    private void turnLight(final String lightId){
         if(isWifiOn()) {
-            RestClient.getService(ip).turnOnLight("Light_1", new Callback<Response>() {
+            Map<String, String> params = new TreeMap<>();
+            params.put(lightId, lightId);
+            RestClient.getService(ip).turnOnLight(params, new Callback<Response>() {
+            //RestClient.getService(ip).turnOnLight(lightId, new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
                     Log.d("myapp", "success");
                     errors = 0;
-                    isLightOn = !isLightOn;
+                    int index = lightId == LIGHT_1 ? 0 : 1;
+                    isLightOn[index] = !isLightOn[index];
                     setLightState();
 
                 }
@@ -177,7 +202,7 @@ public class ControlsFragment extends Fragment implements View.OnClickListener {
                     Log.e("ERROR:", arg0.getLocalizedMessage());
                     Log.d("myapp", "ERROR");
                     errors++;
-                    tryOneMoreTime();
+                    tryOneMoreTime(lightId);
 
                 }
             });
@@ -222,7 +247,13 @@ public class ControlsFragment extends Fragment implements View.OnClickListener {
                                 if (line.contains("name=\"Light_1\"")) {
                                     isLoggded = true;
                                     Log.d("myapp", "...contains");
-                                    isLightOn = line.contains("btn-warning");
+                                    isLightOn[0] = line.contains("btn-warning");
+
+                                }
+                                if (line.contains("name=\"Light_2\"")) {
+                                    isLoggded = true;
+                                    Log.d("myapp", "...contains");
+                                    isLightOn[1] = line.contains("btn-warning");
                                     break;
                                 }
                             }
@@ -236,12 +267,12 @@ public class ControlsFragment extends Fragment implements View.OnClickListener {
                         errors++;
                         if (errors <= 2) {
                             login();
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getStatus();
-                                }
-                            }, 500);
+//                            new Handler().postDelayed(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    getStatus();
+//                                }
+//                            }, 500);
                         }
                     } else {
                         errors = 0;
@@ -259,44 +290,54 @@ public class ControlsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setLightState(){
-        ImageView light = (ImageView)rootView.findViewById(R.id.imageLight);
-        if(isLightOn){
-
-            if(bitmap_lightOn == null || bitmap_lightOn.isRecycled()){
-                bitmap_lightOn = BitmapFactory.decodeResource(getResources(), R.drawable.power_button);
+        ImageView light1 = (ImageView)rootView.findViewById(R.id.imageLight1);
+        ImageView light2 = (ImageView)rootView.findViewById(R.id.imageLight2);
+        Bitmap tmp;
+        for(int index = 0; index < 2; index++) {
+            if (isLightOn[index]) {
+                tmp = bitmap_lightOn;
+            } else {
+                tmp = bitmap_lightOff;
             }
-            light.setImageBitmap(bitmap_lightOn);
+            ((index == 0) ? light1 : light2).setImageBitmap(tmp);
+        }
+    }
 
-        }else{
-            if(bitmap_lightOff == null || bitmap_lightOff.isRecycled()){
-                bitmap_lightOff = BitmapFactory.decodeResource(getResources(), R.drawable.power_button_off);
-            }
-            light.setImageBitmap(bitmap_lightOff);
+    private void loadBitmaps(){
+        if (bitmap_lightOn == null || bitmap_lightOn.isRecycled()) {
+            bitmap_lightOn = BitmapFactory.decodeResource(getResources(), R.drawable.power_button);
+        }
+        if (bitmap_lightOff == null || bitmap_lightOff.isRecycled()) {
+            bitmap_lightOff = BitmapFactory.decodeResource(getResources(), R.drawable.power_button_off);
         }
     }
 
     private void recycleBitmaps(){
-        ImageView light = (ImageView)rootView.findViewById(R.id.imageLight);
-        if(bitmap_lightOn != null && !bitmap_lightOn.isRecycled()){
-            light.setImageBitmap(null);
-            bitmap_lightOn.recycle();
-            bitmap_lightOn = null;
-        }
-        if(bitmap_lightOff != null && !bitmap_lightOff.isRecycled()){
-            light.setImageBitmap(null);
-            bitmap_lightOff.recycle();
-            bitmap_lightOff = null;
+        try {
+            ImageView light = (ImageView)rootView.findViewById(R.id.imageLight1);
+            if(bitmap_lightOn != null && !bitmap_lightOn.isRecycled()){
+                light.setImageBitmap(null);
+                bitmap_lightOn.recycle();
+                bitmap_lightOn = null;
+            }
+            if(bitmap_lightOff != null && !bitmap_lightOff.isRecycled()){
+                light.setImageBitmap(null);
+                bitmap_lightOff.recycle();
+                bitmap_lightOff = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
 
-    private void tryOneMoreTime(){
+    private void tryOneMoreTime(final String lightId){
         if(errors <= 2) {
             login();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    turnLight();
+                    turnLight(lightId);
                 }
             },500);
         }
@@ -306,17 +347,12 @@ public class ControlsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btn_light0:
-                login();
+
+            case R.id.light_switch1:
+                turnLight(LIGHT_1);
                 break;
-            case R.id.button3:
-                turnLight();
-                break;
-            case R.id.button4:
-                logout();
-                break;
-            case R.id.light_switch:
-                turnLight();
+            case R.id.light_switch2:
+                turnLight(LIGHT_2);
                 break;
         }
     }

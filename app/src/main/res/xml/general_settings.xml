@@ -34,6 +34,13 @@
             />
 
 
+        <pt.ulisboa.tecnico.peromas.peromas.CheckCredencialsPreference
+            android:key="check_cred"
+            android:title="Validate credencials"
+            android:enabled="true"
+            android:summary="Checks if the username, password and IP match."
+            android:widgetLayout="@xml/status"
+            ></pt.ulisboa.tecnico.peromas.peromas.CheckCredencialsPreference>
 
 
 

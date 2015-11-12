@@ -62,7 +62,7 @@ public class TrakerBLEFragment extends Fragment {
             Toast.makeText(getActivity().getApplicationContext(), "Please enable Location Service", Toast.LENGTH_SHORT).show();
         }
 
-        doBindService();
+
 
         return rootView;
     }
@@ -124,6 +124,10 @@ public class TrakerBLEFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        doBindService();
+
+
+
         //((BluetoothApplication) getActivity().getApplicationContext()).registerMonitoringActivity((MainActivity)getActivity());
     }
 
@@ -134,6 +138,7 @@ public class TrakerBLEFragment extends Fragment {
         if(myService != null)
             myService.registerMonitoringActivity(null);
         myService = null;
+        getActivity().unbindService(mConnection);
     }
 
     public void toggleScan(){

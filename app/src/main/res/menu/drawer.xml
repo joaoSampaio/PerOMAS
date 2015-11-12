@@ -22,6 +22,12 @@
                 android:checked="false"
                 android:icon="@drawable/ic_control"
                 android:title="@string/controls_string" />
+
+            <item
+                android:id="@+id/webserver"
+                android:checked="false"
+                android:icon="@drawable/ic_control"
+                android:title="@string/webserver_string" />
         </menu>
     </item>
 
